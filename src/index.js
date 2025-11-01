@@ -6,7 +6,7 @@ import * as navigation from './navigation.js';
 const args = process.argv.slice(2);
 const userNameArg = args.find(arg => arg.startsWith('--username='));
 const userName = userNameArg ? userNameArg.split('=')[1] : 'Anonymous'
-  
+
 let currentDir = os.homedir();
   
 console.log(`Welcome to the File Manager, ${userName}!`)
@@ -17,7 +17,7 @@ const rl = readline.createInterface({
   output: process.stdout
 })
 
-rl.on('line', (input) => {
+rl.on('line', async (input) => {
   const trimmedInput = input.trim();
 
   if (trimmedInput === '.exit') {
@@ -25,13 +25,20 @@ rl.on('line', (input) => {
     return;
   }
 
-  if (trimmedInput === 'ls') {
-    navigation.ls(currentDir);
-  } else {
-    console.log('Invalid input')
+  const [command, ...args] = trimmedInput.split(' ');
+
+  switch (command) {
+    case 'up': currentDir = await navigation.up(currentDir);
+      break;
+    case 'cd': currentDir = await navigation.cd(currentDir, args[0]);
+        break;
+    case 'ls': await navigation.ls(currentDir);
+      break;
+    default: console.log('Invalid input');
+      break;
   }
 
-  console.log(`You are currently in ${currentDir}!`)
+  console.log(`You are currently in ${currentDir}`)
 })
 
 rl.on('close', () => {

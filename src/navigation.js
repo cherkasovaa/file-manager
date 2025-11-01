@@ -1,17 +1,38 @@
-// up, cd, ls
-import fs from 'fs/promises';
+import fsPromises from 'fs/promises';
+import path from 'path';
 
-const up = () => {
-  //
+const up = async (currentDir) => {
+  const newPath = path.join(currentDir, '..');
+  
+  return newPath;
 }
 
-const cd = () => {
-  //
+const cd = async (currentDir, targetDir) => {
+  try {
+    if (!targetDir) {
+      console.error('Operation failed. The target path does not exist');
+    }
+    
+    const newPath = path.resolve(currentDir, targetDir);
+
+    const stat = await fsPromises.stat(newPath);
+
+    if (stat.isDirectory()) {
+      return newPath;
+    } else {
+      console.error(`Operation failed. The target path "${targetDir}" is not a directory`)
+      return currentDir;
+    }
+
+  } catch (err) {
+    console.error(`Operation failed with error: ${err.message}`)
+    return currentDir;
+  }
 }
 
 const ls = async (path) => {
   try {
-    const list = await fs.readdir(path, {withFileTypes: true});
+    const list = await fsPromises.readdir(path, {withFileTypes: true});
   
     const directories = list
       .filter(file => file.isDirectory())
@@ -27,7 +48,7 @@ const ls = async (path) => {
   
     console.table(result)
   } catch (err) {
-    throw new Error('Operation failed')
+    console.error(`Operation failed with error: ${err.message}`)
   }
 }
 
