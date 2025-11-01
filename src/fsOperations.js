@@ -1,10 +1,28 @@
+import { createReadStream } from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
+import { stdout } from 'process';
 
 // Read file and print it's content in console (should be done using Readable stream)
 // cat path_to_file
-const cat = () => {
-  //
+const cat = async (currentDir, pathToFile) => {
+  if (!pathToFile) {
+    console.error('Invalid input');
+    return;
+  }
+
+  const filePath = path.resolve(currentDir, pathToFile);
+  const rs = createReadStream(filePath);
+
+  rs.on('end', () => {
+    console.log('');
+  });
+  
+  rs.on('error', (err) => {
+    console.error(`Operation failed with Error: ${err.message}`);
+  })
+
+  rs.pipe(stdout);
 }
 
 // Create empty file in current working directory

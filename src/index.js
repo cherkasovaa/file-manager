@@ -35,6 +35,8 @@ rl.on('line', async (input) => {
         break;
     case 'ls': await navigation.ls(currentDir);
       break;
+    case 'cat': await fsOperations.cat(currentDir, args[0]);
+      break;
     case 'add': await fsOperations.add(currentDir, args[0]);
       break;
     case 'mkdir': await fsOperations.mkdir(currentDir, args[0]);
