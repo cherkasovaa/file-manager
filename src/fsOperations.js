@@ -1,7 +1,8 @@
-import { createReadStream } from 'fs';
+import { createReadStream, createWriteStream, } from 'fs';
 import fsPromises from 'fs/promises';
 import path from 'path';
 import { stdout } from 'process';
+import { pipeline } from 'stream/promises';
 
 // Read file and print it's content in console (should be done using Readable stream)
 // cat path_to_file
@@ -80,8 +81,30 @@ const rn = async (currentDir, pathToFile, newFilename) => {
 
 // Copy file (should be done using Readable and Writable streams)
 // cp path_to_file path_to_new_directory
-const cp = () => {
-  //
+const cp = async (currentDir, pathToFile, pathToNewDirectory) => {
+  if (!pathToFile || !pathToNewDirectory) {
+    console.error('Invalid input');
+    return;
+  }
+
+  try {
+    const sourcePath = path.resolve(currentDir, pathToFile);
+    const targetPath = path.resolve(currentDir, pathToNewDirectory);
+
+    const fileName = path.basename(sourcePath);
+    const copyFile = path.join(targetPath, fileName);
+
+    const sourceStat = await fsPromises.stat(sourcePath);
+    const targetStat = await fsPromises.stat(targetPath);
+    if (!sourceStat.isFile() || !targetStat.isDirectory()) {
+      console.error('Operation failed');
+      return;
+    }
+
+    await pipeline(createReadStream(sourcePath), createWriteStream(copyFile));
+  } catch (err) {
+    console.error(`Operation failed with Error: ${err.message}`)
+  }
 }
 
 // Move file (same as copy but initial file is deleted, copying part should be done using Readable and Writable streams)
