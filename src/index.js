@@ -1,6 +1,7 @@
 import os from 'os';
 import process from 'process';
 import * as readline from 'readline';
+import * as navigation from './navigation.js';
 
 const args = process.argv.slice(2);
 const userNameArg = args.find(arg => arg.startsWith('--username='));
@@ -25,7 +26,7 @@ rl.on('line', (input) => {
   }
 
   if (trimmedInput === 'ls') {
-    console.log('List files will be here...')
+    navigation.ls(currentDir);
   } else {
     console.log('Invalid input')
   }
