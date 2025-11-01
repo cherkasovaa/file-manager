@@ -42,8 +42,22 @@ const mkdir = async (currentDir, dirName) => {
 
 // Rename file (content should remain unchanged)
 // rn path_to_file new_filename
-const rn = () => {
-  //
+const rn = async (currentDir, pathToFile, newFilename) => {
+  if (!pathToFile || !newFilename) {
+    console.error('Invalid input');
+    return;
+  }
+
+  try {
+    const filePath = path.resolve(currentDir, pathToFile);
+    const dirName = path.dirname(filePath);
+
+    const newFilePath = path.join(dirName, newFilename);
+    
+    await fsPromises.rename(filePath, newFilePath);
+  } catch (err) {
+    console.error(`Operation failed with Error: ${err.message}`)
+  }
 }
 
 // Copy file (should be done using Readable and Writable streams)

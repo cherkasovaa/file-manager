@@ -41,6 +41,8 @@ rl.on('line', async (input) => {
       break;
     case 'rm': await fsOperations.rm(currentDir, args[0]);
       break;
+    case 'rn': await fsOperations.rn(currentDir, args[0], args[1]);
+      break;
     default: console.log('Invalid input');
       break;
   }
