@@ -1,8 +1,8 @@
 import os from 'os';
 import process from 'process';
 import * as readline from 'readline';
-import * as navigation from './navigation.js';
 import * as fsOperations from './fsOperations.js';
+import * as navigation from './navigation.js';
 
 const args = process.argv.slice(2);
 const userNameArg = args.find(arg => arg.startsWith('--username='));
@@ -36,6 +36,8 @@ rl.on('line', async (input) => {
     case 'ls': await navigation.ls(currentDir);
       break;
     case 'add': await fsOperations.add(currentDir, args[0]);
+      break;
+    case 'mkdir': await fsOperations.mkdir(currentDir, args[0]);
       break;
     default: console.log('Invalid input');
       break;

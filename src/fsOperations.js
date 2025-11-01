@@ -26,8 +26,18 @@ const add = async (currentDir, fileName) => {
 
 // Create new directory in current working directory
 // mkdir new_directory_name
-const mkdir = () => {
-  //
+const mkdir = async (currentDir, dirName) => {
+  if (!dirName) {
+    console.error('Invalid input');
+    return;
+  }
+
+  try {
+    const targetPath = path.join(currentDir, dirName);
+    await fsPromises.mkdir(targetPath);
+  } catch (err) {
+    console.error(`Operation failed with Error: ${err.message}`)
+  }
 }
 
 // Rename file (content should remain unchanged)
