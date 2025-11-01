@@ -109,8 +109,35 @@ const cp = async (currentDir, pathToFile, pathToNewDirectory) => {
 
 // Move file (same as copy but initial file is deleted, copying part should be done using Readable and Writable streams)
 // mv path_to_file path_to_new_directory
-const mv = () => {
-  //
+const mv = async (currentDir, pathToFile, pathToNewDirectory) => {
+  if (!pathToFile || !pathToNewDirectory) {
+    console.error('Invalid input');
+    return;
+  }
+
+  try {
+    const sourcePath = path.resolve(currentDir, pathToFile);
+    const targetPath = path.resolve(currentDir, pathToNewDirectory);
+
+    const fileName = path.basename(sourcePath);
+    const copyFile = path.join(targetPath, fileName);
+
+    const sourceStat = await fsPromises.stat(sourcePath);
+    const targetStat = await fsPromises.stat(targetPath);
+    if (!sourceStat.isFile() || !targetStat.isDirectory()) {
+      console.error('Operation failed');
+      return;
+    }
+
+    const rs = createReadStream(sourcePath);
+    const ws = createWriteStream(copyFile);
+
+    await pipeline(rs, ws);
+    await fsPromises.unlink(sourcePath);
+    
+  } catch (err) {
+    console.error(`Operation failed with Error: ${err.message}`)
+  }
 }
 
 // Delete file
