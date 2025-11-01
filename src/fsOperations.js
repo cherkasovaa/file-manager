@@ -44,7 +44,6 @@ const mkdir = async (currentDir, dirName) => {
 // rn path_to_file new_filename
 const rn = () => {
   //
-
 }
 
 // Copy file (should be done using Readable and Writable streams)
@@ -61,8 +60,22 @@ const mv = () => {
 
 // Delete file
 // rm path_to_file
-const rm = () => {
-  //
+const rm = async (currentDir, pathToFile) => {
+  if (!pathToFile) {
+    console.error('Invalid input');
+    return;
+  }
+
+  try {
+    const resolvePathToFile = path.resolve(currentDir, pathToFile);
+    // Will delete only files 
+    await fsPromises.unlink(resolvePathToFile);
+
+    // Will delete files and empty directories
+    // await fsPromises.rm(resolvePathToFile);
+  } catch (err) {
+    console.error(`Operation failed with Error: ${err.message}`)
+  }
 }
 
 export { add, cat, cp, mkdir, mv, rm, rn };
