@@ -3,6 +3,7 @@ import process from 'process';
 import * as readline from 'readline';
 import * as fsOperations from './fsOperations.js';
 import * as navigation from './navigation.js';
+import * as hash from './hash.js';
 
 const args = process.argv.slice(2);
 const userNameArg = args.find(arg => arg.startsWith('--username='));
@@ -48,6 +49,8 @@ rl.on('line', async (input) => {
     case 'cp': await fsOperations.cp(currentDir, args[0], args[1]);
       break;
     case 'mv': await fsOperations.mv(currentDir, args[0], args[1]);
+      break;
+    case 'hash': await hash.calcHash(currentDir, args[0]);
       break;
     default: console.log('Invalid input');
       break;
