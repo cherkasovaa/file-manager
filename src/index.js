@@ -5,6 +5,7 @@ import * as fsOperations from './fsOperations.js';
 import * as hash from './hash.js';
 import * as navigation from './navigation.js';
 import * as osInfo from './osInfo.js';
+import * as compression from './compression.js';
 
 const args = process.argv.slice(2);
 const userNameArg = args.find(arg => arg.startsWith('--username='));
@@ -54,6 +55,10 @@ rl.on('line', async (input) => {
     case 'hash': await hash.calcHash(currentDir, args[0]);
       break;
     case 'os': await osInfo.doCommand(args[0]);
+      break;
+    case 'compress': await compression.compress(currentDir, args[0], args[1]);
+      break;
+    case 'decompress': await compression.decompress(currentDir, args[0], args[1]);
       break;
     default: console.log('Invalid input');
       break;
