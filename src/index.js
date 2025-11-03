@@ -2,14 +2,15 @@ import os from 'os';
 import process from 'process';
 import * as readline from 'readline';
 import * as fsOperations from './fsOperations.js';
-import * as navigation from './navigation.js';
 import * as hash from './hash.js';
+import * as navigation from './navigation.js';
+import * as osInfo from './osInfo.js';
 
 const args = process.argv.slice(2);
 const userNameArg = args.find(arg => arg.startsWith('--username='));
 const userName = userNameArg ? userNameArg.split('=')[1] : 'Anonymous'
 
-let currentDir = os.homedir();
+let currentDir = osInfo.currentDir;
   
 console.log(`Welcome to the File Manager, ${userName}!`)
 console.log(`You are currently in ${currentDir}!`)
@@ -51,6 +52,8 @@ rl.on('line', async (input) => {
     case 'mv': await fsOperations.mv(currentDir, args[0], args[1]);
       break;
     case 'hash': await hash.calcHash(currentDir, args[0]);
+      break;
+    case 'os': await osInfo.doCommand(args[0]);
       break;
     default: console.log('Invalid input');
       break;
