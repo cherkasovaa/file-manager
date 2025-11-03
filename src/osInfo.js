@@ -1,7 +1,5 @@
 import os from 'os';
 
-const currentDir = os.homedir();
-
 const getCPUS = () => {
   const cpus = os.cpus();
 
@@ -40,4 +38,4 @@ const doCommand = async (command) => {
   console.log(result)
 }
 
-export { currentDir, doCommand };
+export { doCommand, getHomeDir };
