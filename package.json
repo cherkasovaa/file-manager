@@ -1,0 +1,24 @@
+{
+  "name": "file-manager",
+  "version": "1.0.0",
+  "description": "File Manager using Node.js APIs",
+  "homepage": "https://github.com/cherkasovaa/file-manager#readme",
+  "bugs": {
+    "url": "https://github.com/cherkasovaa/file-manager/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cherkasovaa/file-manager.git"
+  },
+  "license": "ISC",
+  "author": "cherkasovaa",
+  "type": "module",
+  "main": "index.js",
+  "keywords": [
+    "nodejs",
+    "file-manager"
+  ],
+  "scripts": {
+    "start": "node src/index.js"
+  }
+}
